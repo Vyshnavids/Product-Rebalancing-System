@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #8c8b8c;
+        }
+
+        .form-container {
+            background-color: #dbf6fb;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #400e0e;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        label {
+            color: #555;
+            width: 30%; /* Adjust the width of the label as needed */
+        }
+
+        input {
+            width: 65%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        button {
+            padding: 10px;
+            width: 100%; /* Ensure button spans full width */
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #064213;
+        }
+
+        .back-btn {
+            background-color: #007bff;
+            margin-top: 10px;
+        }
+
+        .back-btn:hover {
+            background-color: #072647;
+        }
+
+        .message {
+            margin-top: 10px;
+            font-size: 14px;
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Add Product</h1>
+        <form onsubmit="event.preventDefault(); addProduct();">
+            <div class="form-group">
+                <label for="name">Product Name:</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" required min="1">
+            </div>
+            <button type="submit">Add Product</button>
+        </form>
+        <button class="back-btn" onclick="location.href='index.html'">Back to Home</button>
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        async function addProduct() {
+            const product = {
+                name: document.getElementById('name').value,
+                quantity: document.getElementById('quantity').value
+            };
+            try {
+                const response = await fetch('http://localhost:2003/api/products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(product)
+                });
+                if (response.ok) {
+                    document.getElementById('message').innerText = 'Product added successfully!';
+                    document.getElementById('message').style.color = 'green';
+                } else {
+                    const error = await response.text();
+                    document.getElementById('message').innerText = 'Error: ' + error;
+                }
+            } catch (e) {
+                document.getElementById('message').innerText = 'Network error: ' + e.message;
+            }
+        }
+    </script>
+</body>
+</html>

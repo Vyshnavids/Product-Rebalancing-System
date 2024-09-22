@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rebalance Products</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #363434;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            background-color: #007BFF;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #042141;
+        }
+        .back-btn {
+            background-color: #6c757d;
+        }
+        .back-btn:hover {
+            background-color: #292a2b;
+        }
+    </style>
+    <script>
+        async function rebalanceProducts() {
+            try {
+                const response = await fetch('http://localhost:2003/api/rebalance', {
+                    method: 'POST'
+                });
+                if (response.ok) {
+                    alert('Products rebalanced successfully!');
+                } else {
+                    const error = await response.text();
+                    alert('Error: ' + error);
+                }
+            } catch (e) {
+                alert('Network error: ' + e.message);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Rebalance Products</h1>
+        <button onclick="rebalanceProducts()">Rebalance Now</button>
+        <button class="back-btn" onclick="location.href='index.html'">Back to Home</button>
+    </div>
+</body>
+</html>

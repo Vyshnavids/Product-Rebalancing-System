@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #283f07;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #480f0f;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        label {
+            color: #3e3939;
+            width: 30%; /* Adjust the width of the label as needed */
+        }
+
+        input {
+            width: 65%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px;
+            width: 48%; /* Ensure both buttons share the space equally */
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #4a0c12;
+        }
+
+        .back-btn {
+            background-color: #007bff;
+        }
+
+        .back-btn:hover {
+            background-color: #071b31;
+        }
+
+        .message {
+            margin-top: 10px;
+            font-size: 14px;
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Remove Product</h1>
+        <form onsubmit="event.preventDefault(); removeProduct();">
+            <div class="form-group">
+                <label for="productId">Product ID:</label>
+                <input type="number" id="productId" required min="1">
+            </div>
+            <div class="button-group">
+                <button type="submit">Remove Product</button>
+                <button class="back-btn" onclick="location.href='index.html'">Back to Home</button>
+            </div>
+        </form>
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        async function removeProduct() {
+            const productId = document.getElementById('productId').value;
+            try {
+                const response = await fetch(`http://localhost:2003/api/products/${productId}`, {
+                    method: 'DELETE'
+                });
+                if (response.ok) {
+                    document.getElementById('message').innerText = 'Product removed successfully!';
+                    document.getElementById('message').style.color = 'green';
+                } else {
+                    const error = await response.text();
+                    document.getElementById('message').innerText = 'Error: ' + error;
+                }
+            } catch (e) {
+                document.getElementById('message').innerText = 'Network error: ' + e.message;
+            }
+        }
+    </script>
+</body>
+</html>
